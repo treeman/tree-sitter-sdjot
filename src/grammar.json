@@ -105,32 +105,56 @@
             "name": "emphasis"
           },
           {
-            "type": "PATTERN",
-            "value": "[^\\n]"
+            "type": "SYMBOL",
+            "name": "_text"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "_fallback"
           }
         ]
       }
     },
     "emphasis": {
-      "type": "PREC_LEFT",
-      "value": 0,
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_emphasis_begin"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_inline"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_emphasis_end"
+        }
+      ]
+    },
+    "_emphasis_begin": {
+      "type": "PREC_DYNAMIC",
+      "value": 100,
       "content": {
-        "type": "SEQ",
-        "members": [
-          {
-            "type": "STRING",
-            "value": "_"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "_inline"
-          },
-          {
-            "type": "STRING",
-            "value": "_"
-          }
-        ]
+        "type": "STRING",
+        "value": "_"
       }
+    },
+    "_emphasis_end": {
+      "type": "PREC",
+      "value": 1000,
+      "content": {
+        "type": "STRING",
+        "value": "_"
+      }
+    },
+    "_fallback": {
+      "type": "STRING",
+      "value": "_"
+    },
+    "_text": {
+      "type": "PATTERN",
+      "value": "[^\\n]"
     }
   },
   "extras": [
@@ -139,15 +163,31 @@
       "value": "\r"
     }
   ],
-  "conflicts": [],
+  "conflicts": [
+    [
+      "_emphasis_begin",
+      "_fallback"
+    ]
+  ],
   "precedences": [],
   "externals": [
     {
       "type": "SYMBOL",
       "name": "_close_paragraph"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "_close_block"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "div_end"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "div_begin"
     }
   ],
   "inline": [],
   "supertypes": []
 }
-
