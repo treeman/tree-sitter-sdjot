@@ -147,12 +147,8 @@
       ]
     },
     "_emphasis_begin": {
-      "type": "PREC_DYNAMIC",
-      "value": 100,
-      "content": {
-        "type": "STRING",
-        "value": "_"
-      }
+      "type": "STRING",
+      "value": "_"
     },
     "_emphasis_end": {
       "type": "PREC",
@@ -163,8 +159,12 @@
       }
     },
     "_fallback": {
-      "type": "STRING",
-      "value": "_"
+      "type": "PREC_DYNAMIC",
+      "value": -100,
+      "content": {
+        "type": "STRING",
+        "value": "_"
+      }
     },
     "_text": {
       "type": "PATTERN",
