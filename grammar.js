@@ -6,7 +6,7 @@ module.exports = grammar({
   // has significant spaces in some places, so let's remove them here too.
   extras: (_) => ["\r"],
 
-  conflicts: ($) => [[$._emphasis_begin, $._fallback]],
+  conflicts: ($) => [[$.emphasis, $._fallback]],
 
   rules: {
     document: ($) => repeat($._block),
@@ -22,8 +22,8 @@ module.exports = grammar({
           "\n",
           repeat($._block),
           $._block_close,
-          optional(alias($._div_marker_end, $.div_marker))
-        )
+          optional(alias($._div_marker_end, $.div_marker)),
+        ),
       ),
 
     // A paragraph contains inline content and is terminated by a blankline
@@ -34,10 +34,8 @@ module.exports = grammar({
     // The markup parser could separate block and inline parsing into separate steps,
     // but we'll do everything in one parser.
     _inline: ($) => repeat1(choice($.emphasis, $._text, $._fallback)),
-    emphasis: ($) => seq($._emphasis_begin, $._inline, $._emphasis_end),
-    _emphasis_begin: (_) => "_",
-    _emphasis_end: (_) => prec(1000, "_"),
-    _fallback: (_) => prec.dynamic(-100, "_"),
+    emphasis: ($) => prec.left(seq("_", $._inline, "_")),
+    _fallback: (_) => "_",
     _text: (_) => /[^\n]/,
   },
 
