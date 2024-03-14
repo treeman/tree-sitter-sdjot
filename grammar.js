@@ -16,8 +16,15 @@ module.exports = grammar({
 
     // A div contains other blocks.
     div: ($) =>
-      prec.left(seq($.div_marker, "\n", repeat($._block), $.div_marker, "\n")),
-    div_marker: (_) => ":::",
+      prec.left(
+        seq(
+          alias($._div_marker_begin, $.div_marker),
+          "\n",
+          repeat($._block),
+          $._block_close,
+          optional(alias($._div_marker_end, $.div_marker))
+        )
+      ),
 
     // A paragraph contains inline content and is terminated by a blankline
     // (two newlines in a row).
@@ -36,8 +43,10 @@ module.exports = grammar({
 
   externals: ($) => [
     $._close_paragraph,
-    $._close_block,
-    $.div_end,
-    $.div_begin,
+    $._block_close,
+    $._div_marker_begin,
+    $._div_marker_end,
+
+    $._ignored,
   ],
 });
