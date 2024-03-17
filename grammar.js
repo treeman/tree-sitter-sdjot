@@ -22,8 +22,8 @@ module.exports = grammar({
           "\n",
           repeat($._block),
           $._block_close,
-          optional(alias($._div_marker_end, $.div_marker))
-        )
+          optional(alias($._div_marker_end, $.div_marker)),
+        ),
       ),
 
     // Code blocks may have a language specifier.
@@ -32,8 +32,8 @@ module.exports = grammar({
         $.code_block_marker,
         optional($.language),
         "\n",
-        $.code,
-        $.code_block_marker
+        optional($.code),
+        $.code_block_marker,
       ),
     code_block_marker: (_) => "```",
     code: (_) => repeat1(seq(/[^\n]*/, "\n")),

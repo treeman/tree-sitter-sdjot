@@ -103,8 +103,16 @@
           "value": "\n"
         },
         {
-          "type": "SYMBOL",
-          "name": "code"
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "code"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
         },
         {
           "type": "SYMBOL",
