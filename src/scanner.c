@@ -37,7 +37,7 @@ void push_block(Scanner *s, BlockType type, uint8_t level) {
   array_push(s->open_blocks, b);
 }
 
-void remove_block(Scanner *s) {
+static void remove_block(Scanner *s) {
   if (s->open_blocks->size > 0) {
     ts_free(array_pop(s->open_blocks));
     if (s->blocks_to_close > 0) {
@@ -46,7 +46,7 @@ void remove_block(Scanner *s) {
   }
 }
 
-uint8_t consume_chars(TSLexer *lexer, char c) {
+static uint8_t consume_chars(TSLexer *lexer, char c) {
   uint8_t count = 0;
   while (lexer->lookahead == c) {
     lexer->advance(lexer, false);
@@ -55,7 +55,7 @@ uint8_t consume_chars(TSLexer *lexer, char c) {
   return count;
 }
 
-bool handle_blocks_to_close(Scanner *s, TSLexer *lexer) {
+static bool handle_blocks_to_close(Scanner *s, TSLexer *lexer) {
   if (s->open_blocks->size == 0) {
     return false;
   }
@@ -76,8 +76,9 @@ bool handle_blocks_to_close(Scanner *s, TSLexer *lexer) {
 // The final block type (such as a `DIV_END` token)
 // is emitted from `output_delayed_token` when all BLOCK_CLOSE
 // tokens are handled.
-void close_blocks_with_final_token(Scanner *s, TSLexer *lexer, size_t count,
-                                   TokenType final, uint8_t final_token_width) {
+static void close_blocks_with_final_token(Scanner *s, TSLexer *lexer,
+                                          size_t count, TokenType final,
+                                          uint8_t final_token_width) {
   remove_block(s);
   s->blocks_to_close = s->blocks_to_close + count - 1;
   lexer->result_symbol = BLOCK_CLOSE;
@@ -88,7 +89,8 @@ void close_blocks_with_final_token(Scanner *s, TSLexer *lexer, size_t count,
 // How many blocks from the top of the stack can we find a matching block?
 // If it's directly on the top, returns 1.
 // If it cannot be found, returns 0.
-size_t number_of_blocks_from_top(Scanner *s, BlockType type, uint8_t level) {
+static size_t number_of_blocks_from_top(Scanner *s, BlockType type,
+                                        uint8_t level) {
   for (int i = s->open_blocks->size - 1; i >= 0; --i) {
     Block *b = *array_get(s->open_blocks, i);
     if (b->type == type && b->level == level) {
@@ -98,8 +100,8 @@ size_t number_of_blocks_from_top(Scanner *s, BlockType type, uint8_t level) {
   return 0;
 }
 
-bool output_delayed_token(Scanner *s, TSLexer *lexer,
-                          const bool *valid_symbols) {
+static bool output_delayed_token(Scanner *s, TSLexer *lexer,
+                                 const bool *valid_symbols) {
   if (s->delayed_token == IGNORED || !valid_symbols[s->delayed_token]) {
     return false;
   }
@@ -113,7 +115,7 @@ bool output_delayed_token(Scanner *s, TSLexer *lexer,
   return true;
 }
 
-bool parse_close_paragraph(TSLexer *lexer) {
+static bool parse_close_paragraph(TSLexer *lexer) {
   // Mark the end before advancing so that the CLOSE_PARAGRAPH token doesn't
   // consume any characters.
   lexer->mark_end(lexer);
@@ -127,7 +129,7 @@ bool parse_close_paragraph(TSLexer *lexer) {
   }
 }
 
-bool parse_div(Scanner *s, TSLexer *lexer, const bool *valid_symbols) {
+static bool parse_div(Scanner *s, TSLexer *lexer, const bool *valid_symbols) {
   if (!valid_symbols[DIV_MARKER_BEGIN] && !valid_symbols[DIV_MARKER_END]) {
     return false;
   }
@@ -180,7 +182,7 @@ bool tree_sitter_sdjot_external_scanner_scan(void *payload, TSLexer *lexer,
   return false;
 }
 
-void init(Scanner *s) {
+static void init(Scanner *s) {
   array_init(s->open_blocks);
   s->blocks_to_close = 0;
   s->delayed_token = IGNORED;
