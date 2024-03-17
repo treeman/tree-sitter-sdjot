@@ -11,8 +11,8 @@ module.exports = grammar({
   rules: {
     document: ($) => repeat($._block),
 
-    // All blocks should end with a newline, but we can also eat newlines directly.
-    _block: ($) => choice($.div, $.paragraph, "\n"),
+    // All blocks should end with a newline, but we can also parse multiple newlines.
+    _block: ($) => choice($.div, $.code_block, $.paragraph, "\n"),
 
     // A div contains other blocks.
     div: ($) =>
@@ -22,9 +22,22 @@ module.exports = grammar({
           "\n",
           repeat($._block),
           $._block_close,
-          optional(alias($._div_marker_end, $.div_marker)),
-        ),
+          optional(alias($._div_marker_end, $.div_marker))
+        )
       ),
+
+    // Code blocks may have a language specifier.
+    code_block: ($) =>
+      seq(
+        $.code_block_marker,
+        optional($.language),
+        "\n",
+        $.code,
+        $.code_block_marker
+      ),
+    code_block_marker: (_) => "```",
+    code: (_) => repeat1(seq(/[^\n]*/, "\n")),
+    language: (_) => /[^\s]+/,
 
     // A paragraph contains inline content and is terminated by a blankline
     // (two newlines in a row).

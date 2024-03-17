@@ -1,8 +1,40 @@
 ===============================================================================
-Div: simple
+Parsing goal
+===============================================================================
+This is a
+multiline _paragraph_
+
+:::
+This is a paragraph inside a div
+:::
+
+```rust
+let x = 2;
+```
+
+-------------------------------------------------------------------------------
+
+(document
+  (paragraph (emphasis))
+  (div
+    (div_marker)
+    (paragraph)
+    (div_marker))
+  (code_block
+    (code_block_marker)
+    (language)
+    (code)
+    (code_block_marker)))
+
+===============================================================================
+Div: close contained elements
 ===============================================================================
 :::
-A paragraph inside a div
+Top-level div
+
+::::
+A paragraph inside a second div,
+both closed when the top-level div is closed
 :::
 
 -------------------------------------------------------------------------------
@@ -11,15 +43,20 @@ A paragraph inside a div
   (div
     (div_marker)
     (paragraph)
+    (div
+      (div_marker)
+      (paragraph))
     (div_marker)))
 
 ===============================================================================
-Div: close nested
+Div: divception
 ===============================================================================
-:::
 ::::
-The second level
 :::
+:::::::
+Divception
+:::
+
 
 -------------------------------------------------------------------------------
 
@@ -28,6 +65,25 @@ The second level
     (div_marker)
     (div
       (div_marker)
-      (paragraph))
-    (div_marker)))
+      (div
+        (div_marker)
+        (paragraph))
+    (div_marker))))
+
+===============================================================================
+Code block
+===============================================================================
+```rust
+// Highlighted rust code
+let x = 2;
+```
+
+-------------------------------------------------------------------------------
+
+(document
+  (code_block
+    (code_block_marker)
+    (language)
+    (code)
+    (code_block_marker)))
 
