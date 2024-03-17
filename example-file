@@ -1,8 +1,4 @@
-:::
-Top-level div
-
-::::
-A paragraph inside a second div,
-both closed when the top-level div is closed
-:::
+```rust
+let x = 2;
+```
 
