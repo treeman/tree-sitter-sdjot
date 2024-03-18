@@ -121,7 +121,7 @@ static bool parse_close_paragraph(TSLexer *lexer) {
   lexer->mark_end(lexer);
 
   uint8_t colons = consume_chars(lexer, ':');
-  if (colons == 3) {
+  if (colons >= 3) {
     lexer->result_symbol = CLOSE_PARAGRAPH;
     return true;
   } else {
