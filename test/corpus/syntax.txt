@@ -8,7 +8,7 @@ multiline _paragraph_
 This is a paragraph inside a div
 :::
 
-```rust
+```gleam
 let x = 2;
 ```
 
@@ -73,8 +73,7 @@ Divception
 ===============================================================================
 Code block
 ===============================================================================
-```rust
-// Highlighted rust code
+```gleam
 let x = 2;
 ```
 

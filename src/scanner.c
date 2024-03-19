@@ -29,7 +29,7 @@ typedef struct {
   uint8_t delayed_token_width;
 } Scanner;
 
-void push_block(Scanner *s, BlockType type, uint8_t level) {
+static void push_block(Scanner *s, BlockType type, uint8_t level) {
   Block *b = ts_malloc(sizeof(Block));
   b->type = type;
   b->level = level;
