@@ -1,3 +1,8 @@
+> [!IMPORTANT]
+> **This repository has moved to <https://codeberg.org/treeman/tree-sitter-sdjot>.**
+>
+> This GitHub copy is a frozen archive. New commits, issues, and pull requests should go to Codeberg.
+
 This is a Tree-sitter grammar I wrote in the blog post: <https://www.jonashietala.se/blog/2024/03/19/lets_create_a_tree-sitter_grammar/>
 
 See the [Tree-sitter documentation][] for how to install dependencies and to get started. Then try `tree-sitter test`.
